@@ -26,7 +26,7 @@ gradient.addColorStop(1, '#'+color2);
 ctx.fillStyle = gradient;
 ctx.fillRect(0, 0, 400, 400);
 
-const HNFont = new FontFace("HN", "url(HN.ttf)");
+const HNFont = new FontFace("HN", "url(./HN.ttf)");
 HNFont.load().then(function(loaded_face) {
     document.fonts.add(loaded_face);
     ctx.font = "144px HN";
