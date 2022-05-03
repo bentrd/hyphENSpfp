@@ -29,16 +29,16 @@ ctx.fillRect(0, 0, 400, 400);
 const HNFont = new FontFace("HN", "url(./HN.ttf)");
 HNFont.load().then(function(loaded_face) {
     document.fonts.add(loaded_face);
-    ctx.font = "144px HN";
+    ctx.font = "135px HN";
     ctx.fillStyle = '#'+color3;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText(char1+'-'+char2, 200, 200);
+    ctx.fillText(char1+'-'+char2, 200, 223);
     ctx.fillStyle = '#'+color3+'66';
-    ctx.font = "64px HN";
+    ctx.font = "46px HN";
     ctx.textAlign = "right";
     ctx.textBaseline = "top";
-    ctx.fillText('.eth', 340,250)
+    ctx.fillText('.eth', 320,270);
 });
 
 const info = document.createElement('div')
