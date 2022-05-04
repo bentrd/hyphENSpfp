@@ -109,7 +109,7 @@ document.body.appendChild(downloadButton);
 const info = document.createElement('div')
 info.classList.add('info')
 info.innerHTML = `
-To change the parameters you can edit the variables contained within the url:<br>
+To customize the pfp you can edit the variables:<br>
 c1: first character <br>
 c2: second character <br>
 g1: top gradient color <br>
