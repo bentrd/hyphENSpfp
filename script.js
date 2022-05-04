@@ -109,7 +109,7 @@ document.body.appendChild(downloadButton);
 const info = document.createElement('div')
 info.classList.add('info')
 info.innerHTML = `
-To change the parameters you must edit the variables contained within the url:<br>
+To change the parameters you can edit the variables contained within the url:<br>
 c1: first character <br>
 c2: second character <br>
 g1: top gradient color <br>
@@ -120,3 +120,22 @@ colors must be in hexadecimal format without the '#' symbol (e.g. 1078c2)<br>
 type 'color picker' in google
 `
 document.body.appendChild(info);
+
+const randomColor = () => {
+    var letters = '0123456789ABCDEF';
+    var color = '';
+    for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+const randomizeColors = () => {
+    color1 = randomColor();
+    color2 = randomColor();
+    color3 = randomColor();
+    color1Input.value = color1;
+    color2Input.value = color2;
+    color3Input.value = color3;
+    updateCanvas();
+}

@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>hyphENS PFP Generator</title>
     <meta name="theme-color" content="#000">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 </head>
 <style>
     html, body {
@@ -32,18 +33,19 @@
         display: flex;
         flex-flow: row wrap;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-end;
     }
     .input {
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         color: white;
         background-color: #111;
         padding: .5em;
-        margin: .5em;
+        margin: 0 .5em;
         border-radius: .5em;
+        height: 70px;
     }
     input[type="text"] {
         border: 2px solid #00000000;
@@ -65,13 +67,22 @@
         color: #fff;
         padding: .5em;
         border-radius: .5em;
-        font-size: 1em;
+        font-size: 17px;
         cursor: pointer;
-        margin-top: 1em;
         transition: 250ms all;
     }
     button:hover {
         background-color: crimson;
+    }
+    button.random {
+        width: 100%;
+        background-color: #050505;
+    }
+    button.random:hover {
+        background-color: crimson;
+    }
+    canvas {
+        margin-bottom: 1em;
     }
 </style>
 <body>
@@ -95,6 +106,12 @@
         <div class="input">
             <span>tc</span>
             <input type="text" class="large" id="color3" placeholder="tc" maxlength="6">
+        </div>
+        <div class="input">
+            <span>random colors</span>
+            <button onclick="randomizeColors()" class="random">
+                <i class='fas fa-dice' style='color: white'></i>
+            </button>
         </div>
     </div>
 </body>
