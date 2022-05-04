@@ -6,10 +6,15 @@ var char2 = url.searchParams.get("c2");
 var color1 = url.searchParams.get("g1");
 var color2 = url.searchParams.get("g2");
 var color3 = url.searchParams.get("tc");
+var offset = 0;
 
 if (char1 == null || char2 == null || color1 == null || color2 == null || color3 == null) {
     window.alert("Error: Missing parameters. Check the URL.");
     window.location.href = "index.html?c1=x&c2=y&g1=1078c2&g2=57b9ff&tc=ffffff";
+}
+
+if (['y','g','j','q'].includes(char2)) {
+    offset = 20;
 }
 
 var canvas = document.createElement("canvas");
@@ -32,13 +37,13 @@ HNFont.load().then(function(loaded_face) {
     ctx.font = "135px HN";
     ctx.fillStyle = '#'+color3;
     ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(char1+'-'+char2, 200, 223);
+    ctx.textBaseline = "top";
+    ctx.fillText(char1+'-'+char2, 200, 150);
     ctx.fillStyle = '#'+color3+'66';
     ctx.font = "46px HN";
     ctx.textAlign = "right";
     ctx.textBaseline = "top";
-    ctx.fillText('.eth', 320,270);
+    ctx.fillText('.eth', 320,255 + offset);
 });
 
 const info = document.createElement('div')
