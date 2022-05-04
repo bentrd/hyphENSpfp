@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>hyphENS PFP Generator</title>
-    <meta name="theme-color" content="#000">
-    <!--favicon-->
+    <meta name="theme-color" content="#222">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
@@ -22,14 +22,17 @@
     <meta property="twitter:title" content="hyphENS PFP Generator">
     <meta property="twitter:description" content="Generate a PFP for your hyphENS address.">
     <meta property="twitter:image" content="./img.png">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 </head>
 <style>
-    html, body {
+    html,
+    body {
         margin: 0;
         padding: 0;
         font-family: Arial, Helvetica, sans-serif;
     }
+
     body {
         display: flex;
         flex-direction: column;
@@ -37,6 +40,7 @@
         align-items: center;
         background-color: #222;
     }
+
     .info {
         margin: .5em;
         margin-top: 2em;
@@ -44,6 +48,7 @@
         font-size: .7em;
         color: #fff;
     }
+
     .inputs {
         margin: 1em 0;
         display: flex;
@@ -51,6 +56,7 @@
         justify-content: space-between;
         align-items: flex-end;
     }
+
     .input {
         display: flex;
         flex-direction: column;
@@ -63,6 +69,7 @@
         border-radius: .5em;
         height: 70px;
     }
+
     input[type="text"] {
         border: 2px solid #00000000;
         outline: none;
@@ -73,9 +80,11 @@
         font-size: 20px;
         margin-top: .5em;
     }
+
     input[type="text"].large {
         width: 80px;
     }
+
     button {
         border: none;
         outline: none;
@@ -87,20 +96,25 @@
         cursor: pointer;
         transition: 250ms all;
     }
+
     button:hover {
         background-color: crimson;
     }
+
     button.random {
         width: 100%;
         background-color: #050505;
     }
+
     button.random:hover {
         background-color: crimson;
     }
+
     canvas {
         margin-bottom: 1em;
     }
 </style>
+
 <body>
     <div class="inputs">
         <div class="input">
@@ -132,4 +146,5 @@
     </div>
 </body>
 <script src="script.js"></script>
+
 </html>
