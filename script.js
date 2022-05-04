@@ -9,7 +9,6 @@ var color3 = url.searchParams.get("tc");
 var offset = 0;
 
 if (char1 == null || char2 == null || color1 == null || color2 == null || color3 == null) {
-    window.alert("Error: Missing parameters. Check the URL.");
     window.location.href = "index.html?c1=x&c2=y&g1=1078c2&g2=57b9ff&tc=ffffff";
 }
 
@@ -74,24 +73,24 @@ HNFont.load().then((loaded_face) => {
 });
 
 const updateCanvas = () => {
-    if (['y','g','j','q'].includes(char2)) offset = 20;
+    if (['y', 'g', 'j', 'q'].includes(char2)) offset = 20;
     else offset = 0;
     var gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, '#'+color1);
-    gradient.addColorStop(1, '#'+color2);
+    gradient.addColorStop(0, '#' + color1);
+    gradient.addColorStop(1, '#' + color2);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, 400, 400);
     ctx.font = "135px HN";
-    ctx.fillStyle = '#'+color3;
+    ctx.fillStyle = '#' + color3;
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    ctx.fillText(char1+'-'+char2, 200, 150);
-    ctx.fillStyle = '#'+color3+'66';
+    ctx.fillText(char1 + '-' + char2, 200, 150);
+    ctx.fillStyle = '#' + color3 + '66';
     ctx.font = "46px HN";
     ctx.textAlign = "right";
     ctx.textBaseline = "top";
     ctx.fillText('.eth', 320, 255 + offset);
-    window.history.replaceState(null, null, "?c1="+char1+"&c2="+char2+"&g1="+color1+"&g2="+color2+"&tc="+color3);
+    window.history.replaceState(null, null, "?c1=" + char1 + "&c2=" + char2 + "&g1=" + color1 + "&g2=" + color2 + "&tc=" + color3);
 }
 
 const downloadButton = document.createElement("button");
