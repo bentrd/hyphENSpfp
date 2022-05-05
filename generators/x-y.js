@@ -107,6 +107,15 @@ for (let input of inputs) {
             case "char2":
                 char2 = input.value;
                 break;
+            case "color1":
+                color1 = input.value;
+                break;
+            case "color2":
+                color2 = input.value;
+                break;
+            case "color3":
+                color3 = input.value;
+                break;
         }
         updateCanvas();
     });
