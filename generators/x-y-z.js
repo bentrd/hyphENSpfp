@@ -12,35 +12,34 @@ var canvas = document.createElement("canvas");
 canvas.style.borderRadius = "0%";
 canvas.style.boxShadow = "0px 0px 20px #00000088";
 var ctx = canvas.getContext("2d");
-canvas.width = 400;
-canvas.height = 400;
+var scale = 2;
+canvas.width = 400 * scale;
+canvas.height = 400 * scale;
 
 const updateCanvas = () => {
-    if (['y', 'g', 'j', 'q'].includes(char3)) offset = 20;
+    if (['y', 'g', 'j', 'q'].includes(char3)) offset = canvas.height * 0.05;
     else offset = 0;
-    var gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, '#' + color1);
     gradient.addColorStop(1, '#' + color2);
     ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 400, 400);
-    ctx.font = "120px HN";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.font = canvas.width * 120 / 400 + "px HN";
     ctx.fillStyle = '#' + color3;
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    ctx.fillText(char1 + '-' + char2 + '-' + char3, 200, 150);
+    ctx.fillText(char1 + '-' + char2 + '-' + char3, canvas.width / 2, canvas.height * 3 / 8);
     ctx.fillStyle = '#' + color3 + '66';
-    ctx.font = "46px HN";
+    ctx.font = canvas.width * 46 / 400 + "px HN";
     ctx.textAlign = "right";
     ctx.textBaseline = "top";
-    ctx.fillText('.eth', 320, 255 + offset);
-    //if parameters not in url, add them
+    ctx.fillText('.eth', canvas.width * 320 / 400, canvas.height * 255 / 400 + offset);
     if (url.searchParams.get("c1") == null) url.searchParams.append("c1", char1);
     if (url.searchParams.get("c2") == null) url.searchParams.append("c2", char2);
     if (url.searchParams.get("c3") == null) url.searchParams.append("c3", char3);
     if (url.searchParams.get("g1") == null) url.searchParams.append("g1", color1);
     if (url.searchParams.get("g2") == null) url.searchParams.append("g2", color2);
     if (url.searchParams.get("tc") == null) url.searchParams.append("tc", color3);
-    //update url
     window.history.replaceState({}, '', url.href);
 }
 
@@ -78,40 +77,47 @@ color3Input.value = color3;
 
 var inputs = document.getElementsByTagName("input");
 for (let input of inputs) {
+    if (input.id == "color1" || input.id == "color2" || input.id == "color3") {
+        input.addEventListener("focus", () => {
+            var picker = document.createElement("input");
+            picker.type = "color";
+            picker.value = input.value.substring(1);
+            picker.addEventListener("change", () => {
+                input.value = picker.value.substring(1);
+                switch (input.id) {
+                    case "color1":
+                        color1 = input.value;
+                        break;
+                    case "color2":
+                        color2 = input.value;
+                        break;
+                    case "color3":
+                        color3 = input.value;
+                        break;
+                }
+                updateCanvas();
+            });
+            document.body.appendChild(picker);
+            picker.click();
+        });
+        input.addEventListener("blur", () => {
+            document.body.removeChild(document.getElementsByTagName("input")[document.getElementsByTagName("input").length - 1]);
+        });
+    }
     input.addEventListener("blur", () => {
-        if (checkInput(input)) {
-            input.style.border = "2px solid #00000000";
-            switch (input.id) {
-                case "char1":
-                    char1 = input.value;
-                    break;
-                case "char2":
-                    char2 = input.value;
-                    break;
-                case "char3":
-                    char3 = input.value;
-                    break;
-                case "color1":
-                    color1 = input.value;
-                    break;
-                case "color2":
-                    color2 = input.value;
-                    break;
-                case "color3":
-                    color3 = input.value;
-                    break;
-            }
-        } else {
-            input.style.border = "red solid 2px";
+        switch (input.id) {
+            case "char1":
+                char1 = input.value;
+                break;
+            case "char2":
+                char2 = input.value;
+                break;
+            case "char3":
+                char3 = input.value;
+                break;
         }
         updateCanvas();
     });
-}
-
-const checkInput = (input) => {
-    if (input.value.match(/^\w$/g)) return true;
-    if (input.value.match(/^[0-9a-fA-F]{6}$/g)) return true;
-    return false;
 }
 
 const HNFont = new FontFace("HN", "url(../HN.ttf)");
