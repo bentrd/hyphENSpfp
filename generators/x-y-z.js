@@ -147,8 +147,8 @@ g1: top gradient color <br>
 g2: bottom gradient color <br>
 tc: text color
 <br><br>
-colors must be in hexadecimal format without the '#' symbol (e.g. 1078c2)<br>
-type 'color picker' in google
+As Safari does not support the native html color picker,<br>
+you can either type the hex code or google 'color picker'.
 `
 
 const randomizeColors = () => {

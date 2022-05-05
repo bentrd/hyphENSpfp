@@ -73,7 +73,7 @@ color3Input.value = color3;
 var inputs = document.getElementsByTagName("input");
 for (let input of inputs) {
     if (input.id == "color1" || input.id == "color2" || input.id == "color3") {
-        input.addEventListener("focus", () => {
+        input.addEventListener("click", () => {
             var picker = document.createElement("input");
             picker.type = "color";
             picker.value = input.value.substring(1);
@@ -92,11 +92,7 @@ for (let input of inputs) {
                 }
                 updateCanvas();
             });
-            document.body.appendChild(picker);
             picker.click();
-        });
-        input.addEventListener("blur", () => {
-            document.body.removeChild(document.getElementsByTagName("input")[document.getElementsByTagName("input").length - 1]);
         });
     }
     input.addEventListener("blur", () => {
@@ -147,9 +143,12 @@ g1: top gradient color <br>
 g2: bottom gradient color <br>
 tc: text color
 <br><br>
-colors must be in hexadecimal format without the '#' symbol (e.g. 1078c2)<br>
-type 'color picker' in google
 `
+//if browser is safari
+if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1)
+    info.innerHTML += `As Safari does not support the native html color picker,<br>
+    you can either type the hex code or google 'color picker'.`
+
 
 const randomizeColors = () => {
     color1 = randomColor();
