@@ -7,17 +7,26 @@ const randomColor = () => {
     return color;
 }
 
-const is3 = () => window.location.href.includes('x-y-z');
+const isXY = () => window.location.href.includes('x-y.html');
+const isXYZ = () => window.location.href.includes('x-y-z.html');
+const isXXX = () => window.location.href.includes('xxx.html');
+const isXXXX = () => window.location.href.includes('xxxx.html');
+const isXXXXX = () => window.location.href.includes('xxxxx.html');
 
 const urlString = window.location.href;
 const url = new URL(urlString);
 tailed = ['y', 'g', 'j', 'q'];
-var params = { 'c1': 'x', 'c2': 'y', 'g1': randomColor(), 'g2': randomColor(), 'tc': randomColor() };
-if (is3()) params.c3 = 'z';
+hyphens = '-';
+var params = { 'c1': 'a', 'c2': 'b', 'c3': 'c', 'c4': 'd', 'c5': 'e', 'g1': randomColor(), 'g2': randomColor(), 'tc': randomColor(), 'dh': 'false' };
+
+if (!isXXXXX()) delete params.c5;
+if (!isXXXX()) delete params.c4;
+if (!isXXX() && !isXYZ()) delete params.c3;
+if (!isXY()) delete params.dh;
+
 for (let param of url.searchParams.entries()) {
     params[param[0]] = param[1];
 }
-
 
 var canvas = document.createElement("canvas");
 canvas.style.boxShadow = "0px 0px 20px #00000088";
@@ -26,50 +35,79 @@ var scale = 2;
 canvas.width = 400 * scale;
 canvas.height = 400 * scale;
 
+const updateURL = () => {
+    for (let param in params) {
+        url.searchParams.set(param, params[param]);
+        if (param != 'dh')
+            params[param] = domInputs[param].value;
+    }
+    window.history.replaceState({}, '', url.toString());
+}
+
 const updateCanvas = () => {
     let offset = 0;
-    if (is3()) {
+    if (isXXXXX()) {
+        fontSize = 100;
+    } else if (isXXXX()) {
+        fontSize = 120;
+    } else if (isXXX()) {
+        fontSize = 130;
+    } else if (isXYZ()) {
         if (tailed.includes(params.c3)) offset = canvas.height * 0.05;
-        fontSizes = [120, 46];
-    } else fontSizes = [135, 46];
-    fontSizes = fontSizes.map(x => x * scale);
+        fontSize = 120;
+    } else {
+        if (tailed.includes(params.c2))
+            offset = canvas.height * 0.05;
+        fontSize = 135;
+    }
+    fontSize *= scale;
     var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, '#' + params.g1);
     gradient.addColorStop(1, '#' + params.g2);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.font = fontSizes[0] + "px HN";
+    ctx.font = fontSize + "px HN";
     ctx.fillStyle = '#' + params.tc;
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
-    if (is3())
-        ctx.fillText(params.c1 + '-' + params.c2 + '-' + params.c3, canvas.width / 2, canvas.height * 3 / 8);
-    else ctx.fillText(params.c1 + '-' + params.c2, canvas.width / 2, canvas.height * 3 / 8);
+    if (isXXXXX())
+        ctx.fillText(params.c1 + params.c2 + params.c3 + params.c4 + params.c5, canvas.width / 2, canvas.height * 3 / 8);
+    else if (isXXXX())
+        ctx.fillText(params.c1 + params.c2 + params.c3 + params.c4, canvas.width / 2, canvas.height * 3 / 8);
+    else if (isXXX())
+        ctx.fillText(params.c1 + params.c2 + params.c3, canvas.width / 2, canvas.height * 3 / 8);
+    else if (isXYZ())
+        ctx.fillText(params.c1 + hyphens + params.c2 + hyphens + params.c3, canvas.width / 2, canvas.height * 3 / 8);
+    else ctx.fillText(params.c1 + hyphens + params.c2, canvas.width / 2, canvas.height * 3 / 8);
     ctx.fillStyle = '#' + params.tc + '66';
-    ctx.font = fontSizes[1] + "px HN";
+    ctx.font = 46 * scale + "px HN";
     ctx.textAlign = "right";
     ctx.textBaseline = "top";
     ctx.fillText('.eth', canvas.width * 320 / 400, canvas.height * 255 / 400 + offset);
     updateURL();
 }
 
-const updateURL = () => {
-    for (let param in params) {
-        url.searchParams.set(param, params[param]);
-        params[param] = domInputs[param].value;
+const doubleHyphens = () => {
+    if (params.dh == 'false') {
+        params.dh = 'true';
+        hyphens = '--';
+    } else {
+        params.dh = 'false';
+        hyphens = '-';
     }
-    window.history.replaceState({}, '', url.toString());
+    updateCanvas();
 }
 
 var domInputs = {};
 for (let param in params) {
     domInputs[param] = document.getElementById(param);
-    domInputs[param].value = params[param];
+    if (param != 'dh')
+        domInputs[param].value = params[param];
     domInputs[param].addEventListener('keydown', (e) => {
         if (e.keyCode === 13) domInputs[param].blur();
     });
     domInputs[param].addEventListener('blur', () => {
-        if (!(domInputs[param].value.match(/^[a-zA-Z0-9]$/) || domInputs[param].value.match(/^[a-zA-Z0-9]{6}$/))) {
+        if (!(domInputs[param].value.match(/^[a-zA-Z0-9]$/) || domInputs[param].value.match(/^[a-fA-F0-9]{6}$/))) {
             domInputs[param].value = params[param];
             return;
         }
@@ -81,7 +119,7 @@ for (let param in params) {
             if (navigator.userAgent.indexOf('Safari') != -1) {
                 var picker = document.createElement("input");
                 picker.type = "color";
-                picker.value = domInputs[param].value.substring(1);
+                picker.value = '#' + domInputs[param].value;
                 picker.addEventListener("change", () => {
                     domInputs[param].value = picker.value.substring(1);
                     params[param] = picker.value.substring(1);
@@ -104,7 +142,14 @@ downloadButton.innerHTML = "Download";
 downloadButton.addEventListener("click", () => {
     var dataURL = canvas.toDataURL("image/png");
     var link = document.createElement("a");
-    link.download = `${params.c1}-${params.c2}`(is3() ? `-${params.c3}` : '') + '.png';
+    if (!isXY() && !isXYZ()) hyphens = '';
+    else if (params.dh == 'true') hyphens = '--';
+    let filename = params.c1;
+    for (let param in params) {
+        if (['c2', 'c3', 'c4', 'c5'].includes(param) && typeof params[param] == 'string')
+            filename += hyphens + params[param];
+    }
+    link.download = filename + ".png";
     link.href = dataURL;
     link.click();
 });
@@ -112,10 +157,13 @@ downloadButton.addEventListener("click", () => {
 const info = document.createElement('div')
 info.classList.add('info')
 info.innerHTML = `
-To customize the pfp you can edit the variables:<br>
+<b>Legend:</b><br>
 c1: first character <br>
 c2: second character <br>` +
-    (is3() ? `c3: third character <br>` : '') + `
+    (isXYZ() || isXXX() ? `c3: third character <br>` : '') +
+    (isXXXX() ? `c4: fourth character <br>` : '') +
+    (isXXXXX() ? `c5: fifth character <br>` : '') +
+    `
 g1: top gradient color <br>
 g2: bottom gradient color <br>
 tc: text color
