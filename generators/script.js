@@ -15,9 +15,10 @@ const isXXXXX = () => window.location.href.includes('xxxxx.html');
 
 const urlString = window.location.href;
 const url = new URL(urlString);
-tailed = ['y', 'g', 'j', 'q'];
-hyphens = '-';
-var params = { 'c1': 'a', 'c2': 'b', 'c3': 'c', 'c4': 'd', 'c5': 'e', 'g1': randomColor(), 'g2': randomColor(), 'tc': randomColor(), 'dh': 'false' };
+var tailed = ['y', 'g', 'j', 'q'];
+var hyphens = '-';
+var radial = false;
+var params = { 'c1': 'a', 'c2': 'b', 'c3': 'c', 'c4': 'd', 'c5': 'e', 'g1': randomColor(), 'g2': randomColor(), 'tc': randomColor(), 'dh': 'false', 'radial': false };
 
 if (!isXXXXX()) delete params.c5;
 if (!isXXXX()) delete params.c4;
@@ -38,7 +39,7 @@ canvas.height = 400 * scale;
 const updateURL = () => {
     for (let param in params) {
         url.searchParams.set(param, params[param]);
-        if (param != 'dh')
+        if (param != 'dh' && param != 'radial')
             params[param] = domInputs[param].value;
     }
     window.history.replaceState({}, '', url.toString());
@@ -61,7 +62,7 @@ const updateCanvas = () => {
         fontSize = 135;
     }
     fontSize *= scale;
-    var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    var gradient = radial ? ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width) : ctx.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, '#' + params.g1);
     gradient.addColorStop(1, '#' + params.g2);
     ctx.fillStyle = gradient;
@@ -98,22 +99,28 @@ const doubleHyphens = () => {
     updateCanvas();
 }
 
+const radialGradient = () => {
+    radial = !radial;
+    updateCanvas();
+}
+
 var domInputs = {};
 for (let param in params) {
     domInputs[param] = document.getElementById(param);
-    if (param != 'dh')
+    if (param != 'dh' && param != 'radial') {
         domInputs[param].value = params[param];
-    domInputs[param].addEventListener('keydown', (e) => {
-        if (e.keyCode === 13) domInputs[param].blur();
-    });
-    domInputs[param].addEventListener('blur', () => {
-        if (!(domInputs[param].value.match(/^[a-zA-Z0-9]$/) || domInputs[param].value.match(/^[a-fA-F0-9]{6}$/))) {
-            domInputs[param].value = params[param];
-            return;
-        }
-        params[param] = domInputs[param].value;
-        updateCanvas();
-    });
+        domInputs[param].addEventListener('keydown', (e) => {
+            if (e.keyCode === 13) domInputs[param].blur();
+        });
+        domInputs[param].addEventListener('blur', () => {
+            if (!(domInputs[param].value.match(/^[a-zA-Z0-9]$/) || domInputs[param].value.match(/^[a-fA-F0-9]{6}$/))) {
+                domInputs[param].value = params[param];
+                return;
+            }
+            params[param] = domInputs[param].value;
+            updateCanvas();
+        });
+    }
     if (['g1', 'g2', 'tc'].includes(param)) {
         domInputs[param].addEventListener('focus', () => {
             if (navigator.userAgent.indexOf('Safari') != -1) {

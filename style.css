@@ -75,7 +75,7 @@ input[type="color"] {
     background-color: #111;
 }
 
-#dh {
+.cb {
     min-height: 40px;
     transform: scale(3);
 }
