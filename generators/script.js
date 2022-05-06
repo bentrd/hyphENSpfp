@@ -17,8 +17,7 @@ const urlString = window.location.href;
 const url = new URL(urlString);
 var tailed = ['y', 'g', 'j', 'q'];
 var hyphens = '-';
-var radial = false;
-var params = { 'c1': 'a', 'c2': 'b', 'c3': 'c', 'c4': 'd', 'c5': 'e', 'g1': randomColor(), 'g2': randomColor(), 'tc': randomColor(), 'dh': 'false', 'radial': false };
+var params = { 'c1': 'a', 'c2': 'b', 'c3': 'c', 'c4': 'd', 'c5': 'e', 'g1': randomColor(), 'g2': randomColor(), 'tc': randomColor(), 'dh': 'false', 'rg': 'false' };
 
 if (!isXXXXX()) delete params.c5;
 if (!isXXXX()) delete params.c4;
@@ -39,8 +38,12 @@ canvas.height = 400 * scale;
 const updateURL = () => {
     for (let param in params) {
         url.searchParams.set(param, params[param]);
-        if (param != 'dh' && param != 'radial')
+        if (param != 'dh' && param != 'rg')
             params[param] = domInputs[param].value;
+        else if (document.getElementById(param).checked)
+            params[param] = 'true';
+        else
+            params[param] = 'false';
     }
     window.history.replaceState({}, '', url.toString());
 }
@@ -62,7 +65,7 @@ const updateCanvas = () => {
         fontSize = 135;
     }
     fontSize *= scale;
-    var gradient = radial ? ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width) : ctx.createLinearGradient(0, 0, 0, canvas.height);
+    var gradient = params.rg == 'true' ? ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width) : ctx.createLinearGradient(0, 0, 0, canvas.height);
     gradient.addColorStop(0, '#' + params.g1);
     gradient.addColorStop(1, '#' + params.g2);
     ctx.fillStyle = gradient;
@@ -88,8 +91,8 @@ const updateCanvas = () => {
     updateURL();
 }
 
-const doubleHyphens = () => {
-    if (params.dh == 'false') {
+const doubleHyphens = (e) => {
+    if (e.checked) {
         params.dh = 'true';
         hyphens = '--';
     } else {
@@ -99,15 +102,16 @@ const doubleHyphens = () => {
     updateCanvas();
 }
 
-const radialGradient = () => {
-    radial = !radial;
+const radialGradient = (e) => {
+    if (e.checked) params.rg = 'true';
+    else params.rg = 'false';
     updateCanvas();
 }
 
 var domInputs = {};
 for (let param in params) {
     domInputs[param] = document.getElementById(param);
-    if (param != 'dh' && param != 'radial') {
+    if (param != 'rg' && param != 'dh') {
         domInputs[param].value = params[param];
         domInputs[param].addEventListener('keydown', (e) => {
             if (e.keyCode === 13) domInputs[param].blur();
@@ -120,6 +124,14 @@ for (let param in params) {
             params[param] = domInputs[param].value;
             updateCanvas();
         });
+    } else if (param == 'dh' || param == 'rg') {
+        if (params[param] == 'true') {
+            domInputs[param].checked = true;
+            if (param == 'dh') hyphens = '--';
+        } else {
+            domInputs[param].checked = false;
+            if (param == 'dh') hyphens = '-';
+        }
     }
     if (['g1', 'g2', 'tc'].includes(param)) {
         domInputs[param].addEventListener('focus', () => {
